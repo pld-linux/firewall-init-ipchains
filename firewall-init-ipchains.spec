@@ -3,9 +3,10 @@ Summary(pl):	Skrypt startowy firewalla
 Name:		firewall-init
 Version:	2.0
 Release:	2
-Copyright:	BSD
+License:	BSD
 Group:		Networking/Admin
-Source:		ftp://hunter.mimuw.edu.pl/pub/users/baggins/%{name}-%{version}.tar.gz
+Group(pl):	Sieciowe/Administacyjne
+Source0:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/%{name}-%{version}.tar.gz
 Prereq:		/sbin/chkconfig
 Requires:	ipchains
 Requires:	rc-scripts
@@ -13,12 +14,14 @@ Buildarch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Firewall-init is meant to provide an easy to use interface to start and
-stopping the kernel IP packet filters and accounting through ipchains(8).
+Firewall-init is meant to provide an easy to use interface to start
+and stopping the kernel IP packet filters and accounting through
+ipchains(8).
 
 %description -l pl
-Dziêki firewall-init uzyskuje siê ³atwy interfejs do startowania i stopowania
-filtrów IP j±dra oraz zliczania pakietów poprzez ipchains(8).
+Dziêki firewall-init uzyskuje siê ³atwy interfejs do startowania i
+stopowania filtrów IP j±dra oraz zliczania pakietów poprzez
+ipchains(8).
 
 %prep
 %setup -q
@@ -40,15 +43,15 @@ done
 /sbin/chkconfig --add firewall
 
 %postun
-if [ $1 = 0 ]; then
-   /sbin/chkconfig --del firewall
+if [ "$1" = "0" ]; then
+	/sbin/chkconfig --del firewall
 fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %doc README input.example
 %attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
 %attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall-rules/*
