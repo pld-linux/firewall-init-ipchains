@@ -6,6 +6,7 @@ Release:	2@2.2
 License:	BSD
 Group:		Networking/Admin
 Source0:	ftp://ftp.lj.pl/pub/linux/%{name}-%{version}.tar.gz
+# Source0-md5:	07ba7a897e2d903d629e6607e3b495f3
 Requires:	ipchains
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
