@@ -17,7 +17,7 @@ Firewall-init is meant to provide an easy to use interface to start and
 stopping the kernel IP packet filters and accounting through ipchains(8).
 
 %description -l pl
-Firewall-init ma dostarcza ³atwego interfejsu do startowania i stopowania
+Dziêki firewall-init uzyskuje siê ³atwy interfejs do startowania i stopowania
 filtrów IP j±dra oraz zliczania pakietów poprzez ipchains(8).
 
 %prep
