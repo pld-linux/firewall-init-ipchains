@@ -11,11 +11,11 @@ Group(pl):	Sieciowe/Administacyjne
 # Source0-md5:	e336e02377ef26c258d8ccabeaefcf8c
 Source0:        http://aramin.one.pl/~undefine/%{name}-%{version}.tar.gz
 Patch0:		%{name}-pre.patch
+PreReq:		rc-scripts
+Requires(post,preun):	/sbin/chkconfig
 Requires:	iptables >= 1.2.2-2
 Conflicts:	kernel < 2.3.0
-Prereq:		rc-scripts
-Prereq:		/sbin/chkconfig
-Buildarch:	noarch
+BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
@@ -33,7 +33,11 @@ stopowania filtrów IP j±dra poprzez iptables(8).
 %install
 rm -rf $RPM_BUILD_ROOT
 
-%{__make} install DESTDIR=$RPM_BUILD_ROOT
+%{__make} install \
+	DESTDIR=$RPM_BUILD_ROOT
+
+%clean
+rm -rf $RPM_BUILD_ROOT
 
 %post
 /sbin/chkconfig --add firewall
@@ -44,9 +48,6 @@ if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del firewall
 	/sbin/chkconfig --del firewall-pre
 fi
-
-%clean
-rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
