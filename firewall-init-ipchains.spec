@@ -9,7 +9,7 @@ Group(pl):	Sieciowe/Administacyjne
 Source0:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/%{name}-%{version}.tar.gz
 Prereq:		/sbin/chkconfig
 Requires:	ipchains
-Requires:	rc-scripts
+Prereq:		rc-scripts
 Buildarch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
