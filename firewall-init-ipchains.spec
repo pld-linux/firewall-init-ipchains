@@ -7,7 +7,9 @@ License:	GPL
 Group:		Networking/Admin
 Group(de):	Netzwerkwesen/Administration
 Group(pl):	Sieciowe/Administacyjne
-Source0:	ftp://ftp.pld.org.pl/software/firewall-init/%{name}-%{version}.tar.gz
+# Source0:	ftp://ftp.pld.org.pl/software/firewall-init/%{name}-%{version}.tar.gz
+# Source0-md5:	e336e02377ef26c258d8ccabeaefcf8c
+Source0:        http://aramin.one.pl/~undefine/%{name}-%{version}.tar.gz
 Patch0:		%{name}-pre.patch
 Requires:	iptables >= 1.2.2-2
 Conflicts:	kernel < 2.3.0
