@@ -2,13 +2,14 @@ Summary:	Firewall SysV-init style start-up script
 Summary(pl):	Skrypt startowy firewalla
 Name:		firewall-init
 Version:	2.99.5
-Release:	1
+Release:	1@2.4
 License:	GPL
 Group:		Networking/Admin
 Group(de):	Netzwerkwesen/Administration
 Group(pl):	Sieciowe/Administacyjne
 Source0:	ftp://ftp.pld.org.pl/software/firewall-init/%{name}-%{version}.tar.gz
 Requires:	iptables >= 1.2.2-2
+Conflicts:	kernel < 2.3.0
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
 Buildarch:	noarch
