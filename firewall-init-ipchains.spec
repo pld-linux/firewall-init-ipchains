@@ -53,4 +53,4 @@ rm -rf $RPM_BUILD_ROOT
 %attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
 %attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall-rules/*
 %attr(700,root,root) %dir /etc/sysconfig/firewall-rules
-%attr(700,root,root) /etc/rc.d/init.d/firewall
+%attr(754,root,root) /etc/rc.d/init.d/firewall
