@@ -45,12 +45,12 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(644, root, root, 755)
+%defattr(644,root,root,755)
 %doc README input.example
-%attr(600, root, root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
-%attr(600, root, root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall-rules/*
-%attr(700, root, root) %dir /etc/sysconfig/firewall-rules
-%attr(700, root, root) /etc/rc.d/init.d/firewall
+%attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
+%attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall-rules/*
+%attr(700,root,root) %dir /etc/sysconfig/firewall-rules
+%attr(700,root,root) /etc/rc.d/init.d/firewall
 
 %changelog
 * Thu Oct 29 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
