@@ -7,7 +7,7 @@ License:	BSD
 Group:		Networking/Admin
 Source0:	ftp://ftp.lj.pl/pub/linux/%{name}-%{version}.tar.gz
 Requires:	ipchains
-Conflicts:	kernel >= 2.3 
+Conflicts:	kernel >= 2.3
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
 Buildarch:	noarch
