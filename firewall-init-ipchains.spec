@@ -5,8 +5,6 @@ Version:	2.1
 Release:	1@2.2
 License:	BSD
 Group:		Networking/Admin
-Group(de):	Netzwerkwesen/Administration
-Group(pl):	Sieciowe/Administracyjne
 Source0:	ftp://ftp.lj.pl/pub/linux/%{name}-%{version}.tar.gz
 Requires:	ipchains
 Conflicts:	kernel >= 2.3 
