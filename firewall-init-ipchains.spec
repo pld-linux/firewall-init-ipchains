@@ -10,7 +10,7 @@ Patch1:    firewall-chkconfig.patch
 Prereq:    /sbin/chkconfig
 Requires:  ipfwadm
 Buildarch: noarch
-Buildroot: /tmp/%{name}-%{version}-root
+BuildRoot:	/tmp/%{name}-%{version}-root
 
 %description
 Firewall-init is meant to provide an easy to use interface to start and
