@@ -15,6 +15,7 @@ PreReq:		rc-scripts
 Requires(post,preun):	/sbin/chkconfig
 Requires:	iptables >= 1.2.2-2
 Conflicts:	kernel < 2.3.0
+Obsoletes:	iptables-init
 BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
