@@ -19,7 +19,7 @@ Buildarch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
-Firewall-init is meant to provide an easy to use interface to start
+Firewall-init is meant to provide an easy to use interface for starting
 and stopping the kernel IP packet filter through iptables(8).
 
 %description -l pl
@@ -34,8 +34,6 @@ stopowania filtrów IP j±dra poprzez iptables(8).
 rm -rf $RPM_BUILD_ROOT
 
 %{__make} install DESTDIR=$RPM_BUILD_ROOT
-
-gzip -9nf README
 
 %post
 /sbin/chkconfig --add firewall
@@ -52,7 +50,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README.gz
+%doc README
 %defattr(640,root,root,750)
 %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
 %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall.d/ip*
