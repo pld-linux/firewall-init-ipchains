@@ -1,37 +1,34 @@
-Summary:   Firewall SysV-init style start-up script
-Name:      firewall-init
-Version:   1.2
-Release:   6
-Copyright: BSD
-Group:     Networking/Admin
-Source:    ftp://ftp.redhat.com/pub/home/bandregg/%{name}-%{version}.tar.gz
-Patch0:    firewall-init.patch
-Patch1:    firewall-chkconfig.patch
-Prereq:    /sbin/chkconfig
-Requires:  ipfwadm
-Buildarch: noarch
-BuildRoot:	/tmp/%{name}-%{version}-root
+Summary:	Firewall SysV-init style start-up script
+Name:		firewall-init
+Version:	2.0
+Release:	1
+Copyright:	BSD
+Group:		Networking/Admin
+Source:		ftp://hunter.mimuw.edu.pl/pub/users/baggins/%{name}-%{version}.tar.gz
+Prereq:		/sbin/chkconfig
+Requires:	ipchains
+Buildarch:	noarch
+Buildroot:	/tmp/%{name}-%{version}-root
 
 %description
 Firewall-init is meant to provide an easy to use interface to start and
-stopping the kernel IP packet filters and accounting through ipfwadm(8).
+stopping the kernel IP packet filters and accounting through ipchains(8).
 
 %prep
 %setup -q
-%patch0 -p1
-%patch1 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{sysconfig/firewall-rules,rc.d/{init,rc{0,1,2,3,4,5,6}}.d}
+
+install -d $RPM_BUILD_ROOT/etc/{sysconfig/firewall-rules,rc.d/init.d}
+
+install firewall.init $RPM_BUILD_ROOT/etc/rc.d/init.d/firewall
 install firewall $RPM_BUILD_ROOT/etc/sysconfig/
+
 for i in input output forward; do
-	echo '#<policy> <proto> <s_addr/s_mask> <s_port> <d_addr/d_mask> <d_port> <options>' > \
+	echo '#<policy> <proto> <s_addr/s_mask> <s_port> <d_addr/d_mask> <d_port> <interface> <options>' > \
 		$RPM_BUILD_ROOT/etc/sysconfig/firewall-rules/${i}
 done
-echo '#<direction> <proto> <s_addr/s_mask> <s_port> <d_addr/d_mask> <d_port> <options>' > \
-	$RPM_BUILD_ROOT/etc/sysconfig/firewall-rules/account
-install firewall.init $RPM_BUILD_ROOT/etc/rc.d/init.d/firewall
 
 %post
 /sbin/chkconfig --add firewall
@@ -45,14 +42,19 @@ fi
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(644,root,root,755)
+%defattr(644, root, root, 755)
 %doc README input.example
-%attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
-%attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall-rules/*
-%attr(700,root,root) %dir /etc/sysconfig/firewall-rules
-%attr(700,root,root) /etc/rc.d/init.d/firewall
+%attr(600, root, root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
+%attr(600, root, root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall-rules/*
+%attr(700, root, root) %dir /etc/sysconfig/firewall-rules
+%attr(700, root, root) /etc/rc.d/init.d/firewall
 
 %changelog
+* Tue Jul 06 1999 Jan Rêkorajski <baggins@pld.org.pl>
+  [2.0-1]
+- converted to ipchains
+- new source URL
+
 * Thu Oct 29 1998 Tomasz K³oczko <kloczek@rudy.mif.pg.gda.pl>
   [1.2-6]
 - added support for chconfig (firewall-chconfig.patch and %post{un}
