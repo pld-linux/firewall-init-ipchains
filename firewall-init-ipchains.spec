@@ -1,8 +1,8 @@
 Summary:	Firewall SysV-init style start-up script
 Summary(pl):	Skrypt startowy firewalla
 Name:		firewall-init
-Version:	2.0
-Release:	2
+Version:	2.1
+Release:	1
 License:	BSD
 Group:		Networking/Admin
 Group(pl):	Sieciowe/Administacyjne
