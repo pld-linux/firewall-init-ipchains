@@ -41,10 +41,12 @@ for i in input output forward; do
 done
 
 %post
-NAME=firewall; %chkconfig_add
+/sbin/chkconfig --add firewall
 
-%preun
-NAME=firewall; %chkconfig_del
+%postun
+if [ "$1" = "0" ]; then
+	/sbin/chkconfig --del firewall
+fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
