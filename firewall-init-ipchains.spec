@@ -1,13 +1,14 @@
 Summary:	ipchains firewall SysV-init style start-up script
 Summary(pl):	Skrypt startowy firewalla ipchains
-Name:		firewall-init
+%define		_name	firewall-init
+Name:		%{_name}-ipchains
 Version:	2.1
 Release:	4
 License:	BSD
 Group:		Networking/Admin
-Source0:	%{name}-%{version}.tar.gz
+Source0:	%{_name}-%{version}.tar.gz
 # Source0-md5:	07ba7a897e2d903d629e6607e3b495f3
-Patch0:		%{name}-syntax_verify.patch
+Patch0:		%{_name}-syntax_verify.patch
 Requires:	ipchains
 PreReq:		rc-scripts
 PreReq:		/sbin/chkconfig
@@ -27,7 +28,7 @@ stopowania filtrów IP j±dra oraz zliczania pakietów poprzez
 ipchains(8).
 
 %prep
-%setup -q
+%setup -q -n %{_name}-%{version}
 %patch -p1
 
 %install
