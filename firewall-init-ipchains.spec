@@ -7,7 +7,7 @@ License:	BSD
 Group:		Networking/Admin
 Group(de):	Netzwerkwesen/Administration
 Group(pl):	Sieciowe/Administacyjne
-Source0:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/%{name}-%{version}.tar.gz
+Source0:	ftp://ftp.lj.pl/pub/linux/%{name}-%{version}.tar.gz
 Requires:	ipchains
 Conflicts:	kernel >= 2.3.0
 Prereq:		rc-scripts
