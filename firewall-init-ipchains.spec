@@ -5,11 +5,12 @@ Version:	2.1
 Release:	1
 License:	BSD
 Group:		Networking/Admin
+Group(de):	Netzwerkwesen/Administration
 Group(pl):	Sieciowe/Administacyjne
 Source0:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/%{name}-%{version}.tar.gz
-Prereq:		/sbin/chkconfig
 Requires:	ipchains
 Prereq:		rc-scripts
+Prereq:		/sbin/chkconfig
 Buildarch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
@@ -28,7 +29,6 @@ ipchains(8).
 
 %install
 rm -rf $RPM_BUILD_ROOT
-
 install -d $RPM_BUILD_ROOT/etc/{sysconfig/firewall-rules,rc.d/init.d}
 
 install firewall.init $RPM_BUILD_ROOT/etc/rc.d/init.d/firewall
