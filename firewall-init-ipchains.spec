@@ -1,11 +1,13 @@
-Summary:	Firewall SysV-init style start-up script
-Summary(pl):	Skrypt startowy firewalla
+Summary:	ipchains firewall SysV-init style start-up script
+Summary(pl):	Skrypt startowy firewalla ipchains
 Name:		firewall-init
 Version:	2.1
-Release:	2@2.2
+Release:	3@2.2
 License:	BSD
 Group:		Networking/Admin
-Source0:	ftp://ftp.lj.pl/pub/linux/%{name}-%{version}.tar.gz
+Source0:	%{name}-%{version}.tar.gz
+# Source0-md5:	07ba7a897e2d903d629e6607e3b495f3
+Patch0:		%{name}-syntax_verify.patch
 Requires:	ipchains
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
@@ -24,6 +26,7 @@ ipchains(8).
 
 %prep
 %setup -q
+%patch -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
@@ -36,8 +39,6 @@ for i in input output forward; do
 	echo '#<policy> <proto> <s_addr/s_mask> <s_port> <d_addr/d_mask> <d_port> <interface> <options>' > \
 		$RPM_BUILD_ROOT/etc/sysconfig/firewall-rules/${i}
 done
-
-gzip -9nf README
 
 %post
 /sbin/chkconfig --add firewall
