@@ -1,0 +1,181 @@
+--- firewall-init-2.1/firewall.init.orig	Mon Nov 11 10:48:08 2002
++++ firewall-init-2.1/firewall.init	Mon Mar 29 09:16:27 2004
+@@ -23,6 +23,12 @@
+ 
+ [ -f /sbin/ipchains ] || exit 0
+ 
++syntax_error ()
++{
++	echo $2: "$(nls "$1")"
++	echo "$3"
++}
++
+ ipv4_forward_set ()
+ {
+ 	# Turn IP forwarding on or off. We do this before bringing up the
+@@ -97,48 +103,150 @@
+ 	for CHAIN in ${FILES}; do
+ 	    if [ -s ${CHAIN} ]; then
+ 		grep -v '^#' ${CHAIN} | grep -v '^$' | \
+-		while read POLICY PROTO SADDR SPORT DADDR DPORT IFACE OPTIONS ; do
++		while read LINE; do
++		#POLICY PROTO SADDR SPORT DADDR DPORT IFACE OPTIONS
++		    LINE2=`echo $LINE`
++		    POLICY=${LINE2%% *}
++		    LINE2=${LINE2#$POLICY}; LINE2=${LINE2# }
+ 		    case "${POLICY}" in
+-		     [Nn][Oo][Nn][Ee])
++		      [Nn][Oo][Nn][Ee])
+ 			    POLICY=''
+ 			    ;;
+-		     *)
++		      *)
+ 		     	    POLICY="-j ${POLICY}"
+ 			    ;;
+ 		    esac
++		    PROTO=${LINE2%% *}
++		    LINE2=${LINE2#$PROTO}; LINE2=${LINE2# }
++		    case "${PROTO}" in
++		      [Aa][Nn][Yy])
++			    PROTO=''
++			    ;;
++		      !)
++			    PROTO2=${LINE2%% *}
++			    LINE2=${LINE2#$PROTO2}; LINE2=${LINE2# }
++			    PROTO="-p ! ${PROTO2}"
++			    ;;
++		      *)
++			    PROTO="-p ${PROTO}"
++		    esac
++		    SADDR=${LINE2%% *}
++		    LINE2=${LINE2#$SADDR}; LINE2=${LINE2# }
++		    case "${SADDR}" in
++		      !)
++			    SADDR2=${LINE2%% *}
++			    LINE2=${LINE2#$SADDR2}; LINE2=${LINE2# }
++			    SADDR="! ${SADDR2}"
++			    ;;
++		    esac
++		    SPORT=${LINE2%% *}
++		    LINE2=${LINE2#$SPORT}; LINE2=${LINE2# }
++		    DADDR=''
+ 		    case "${SPORT}" in
+ 		      0:65535|[Aa][Nn][Yy])
+ 			    SPORT=''
+ 			    ;;
++		      */*|*.*.*.*)
++			    DADDR="${SPORT}"
++			    SPORT=''
++			    ;;
++		      !)
++			    SPORT2=${LINE2%% *}
++			    LINE2=${LINE2#$SPORT2}; LINE2=${LINE2# }
++			    case "${SPORT2}" in
++			      */*|*.*.*.*)
++				    DADDR="! ${SPORT2}"
++				    SPORT=''
++				    ;;
++			      *)
++				    if [ -z "$PROTO" ]; then
++					syntax_error "Source port is illegal in line:" "$CHAIN" "$LINE"
++				    else
++					SPORT="! ${SPORT2}"
++				    fi
++			    esac
++			    ;;
++		      *)
++			    if [ -z "$PROTO" ]; then
++				syntax_error "Source port is illegal in line:" "$CHAIN" "$LINE"
++			    fi
++		    esac
++		    if [ -z "${DADDR}" ]; then
++			DADDR=${LINE2%% *}
++			LINE2=${LINE2#$DADDR}; LINE2=${LINE2# }
++		    fi
++		    case "${DADDR}" in
++		      !)
++			    DADDR2=${LINE2%% *}
++			    LINE2=${LINE2#$DADDR2}; LINE2=${LINE2# }
++			    DADDR="! ${DADDR2}"
++			    ;;
+ 		    esac
++		    DPORT=${LINE2%% *}
++		    LINE2=${LINE2#$DPORT}; LINE2=${LINE2# }
++		    IFACE=''
+ 		    case "${DPORT}" in
+ 		      0:65535|[Aa][Nn][Yy])
+ 			    DPORT=''
+ 			    ;;
++		      eth[+0-9]*|lo|ppp[+0-9]*|tunl[+0-9]*)
++			    IFACE="${DPORT}"
++			    DPORT=''
++			    ;;
++		      !)
++			    DPORT2=${LINE2%% *}
++			    LINE2=${LINE2#$DPORT2}; LINE2=${LINE2# }
++			    case "${DPORT2}" in
++			      eth[+0-9]*|lo|ppp[+0-9]*|tunl[+0-9]*)
++				    IFACE="! ${DPORT2}"
++				    DPORT=''
++				    ;;
++			      *)
++				    if [ -z "$PROTO" ]; then
++					syntax_error "Destination port is illegal in line:" "$CHAIN" "$LINE"
++				    else
++					DPORT="! ${DPORT2}"
++				    fi
++			    esac
++			    ;;
++		      *)
++			    if [ -z "$PROTO" ]; then
++				syntax_error "Destination port is illegal in line:" "$CHAIN" "$LINE"
++			    fi
+ 		    esac
++		    if [ -z "${IFACE}" ]; then
++			IFACE=${LINE2%% *}
++			LINE2=${LINE2#$IFACE}; LINE2=${LINE2# }
++		    fi
+ 		    case "${IFACE}" in
+ 		      [Aa][Nn][Yy])
+ 			    IFACE=''
+ 			    ;;
++		      !)
++			    IFACE2=${LINE2%% *}
++			    LINE2=${LINE2#$IFACE2}; LINE2=${LINE2# }
++			    IFACE="-i ! ${IFACE2}"
++			    ;;
+ 		      *)
+ 			    IFACE="-i ${IFACE}"
+ 			    ;;
+ 		    esac
+-		    /sbin/ipchains -A ${CHAIN} -p ${PROTO} ${IFACE} \
++		    OPTIONS=$LINE2
++		    /sbin/ipchains -A ${CHAIN} ${PROTO} ${IFACE} \
+ 		    		-s ${SADDR} ${SPORT} -d ${DADDR} ${DPORT} ${POLICY} ${OPTIONS} 2>> /tmp/.firewall
+ 		done
+ 	    fi
+ 	done
+ 	
+ 	for MODNAME in ${MASQ_MODS}; do
+-		insmod ${MODNAME} > /dev/null 2> /dev/null
++	    insmod ${MODNAME} > /dev/null 2> /dev/null
+ 	done
+ 	
+ 	if [ -s /tmp/.firewall ]; then
+ 	    grep -v '^Try' < /tmp/.firewall | logger -t 'firewall' -p user.notice
+ 	    deltext
+ 	    fail
+-	    echo 'PROBLEMS SETTING UP FIREWALL.  CHECK /var/log/messages!'
++	    echo $(nls 'PROBLEMS SETTING UP FIREWALL.  CHECK /var/log/messages!')
+ 	else
+ 	    deltext
+ 	    ok
+@@ -155,7 +263,7 @@
+ 	/sbin/ipchains -X
+ 
+ 	for MODNAME in ${MASQ_MODS}; do
+-		rmmod ${MODNAME} > /dev/null 2> /dev/null
++	    rmmod ${MODNAME} > /dev/null 2> /dev/null
+ 	done
+ 
+ 	deltext
