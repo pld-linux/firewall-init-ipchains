@@ -1,7 +1,7 @@
 Summary:	Firewall SysV-init style start-up script
 Summary(pl):	Skrypt startowy firewalla
 Name:		firewall-init
-Version:	2.99.0
+Version:	2.99.4
 Release:	1
 License:	GPL
 Group:		Networking/Admin
@@ -34,19 +34,24 @@ gzip -9nf README
 
 %post
 /sbin/chkconfig --add firewall
+/sbin/chkconfig --add firewall-pre
 
 %postun
 if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del firewall
+	/sbin/chkconfig --del firewall-pre
 fi
 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
 %files
-%defattr(640,root,root,750)
+%defattr(644,root,root,755)
 %doc README.gz
+%defattr(640,root,root,750)
 %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
-%verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall.d/*
-%attr(754,root,root) /etc/rc.d/init.d/firewall
+%verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall.d/ip*
+%verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall.d/functions.rules
+/etc/sysconfig/firewall.d/functions
+%attr(754,root,root) /etc/rc.d/init.d/firewall*
 %dir /etc/sysconfig/firewall.d
