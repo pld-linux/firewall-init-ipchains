@@ -1,13 +1,18 @@
 Summary:	Firewall SysV-init style start-up script
 Summary(pl):	Skrypt startowy firewalla
 Name:		firewall-init
-Version:	2.1
-Release:	2@2.2
-License:	BSD
+Version:	2.99.5
+Release:	2@2.4
+License:	GPL
 Group:		Networking/Admin
-Source0:	ftp://ftp.lj.pl/pub/linux/%{name}-%{version}.tar.gz
-# Source0-md5:	07ba7a897e2d903d629e6607e3b495f3
-Requires:	ipchains
+Group(de):	Netzwerkwesen/Administration
+Group(pl):	Sieciowe/Administacyjne
+# Source0:	ftp://ftp.pld.org.pl/software/firewall-init/%{name}-%{version}.tar.gz
+# Source0-md5:	e336e02377ef26c258d8ccabeaefcf8c
+Source0:        http://aramin.one.pl/~undefine/%{name}-%{version}.tar.gz
+Patch0:		%{name}-pre.patch
+Requires:	iptables >= 1.2.2-2
+Conflicts:	kernel < 2.3.0
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
 Buildarch:	noarch
@@ -15,35 +20,31 @@ BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Firewall-init is meant to provide an easy to use interface to start
-and stopping the kernel IP packet filters and accounting through
-ipchains(8).
+and stopping the kernel IP packet filter through iptables(8).
 
 %description -l pl
 Dziêki firewall-init uzyskuje siê ³atwy interfejs do startowania i
-stopowania filtrów IP j±dra oraz zliczania pakietów poprzez
-ipchains(8).
+stopowania filtrów IP j±dra poprzez iptables(8).
 
 %prep
 %setup -q
+%patch0 -p1
 
 %install
 rm -rf $RPM_BUILD_ROOT
-install -d $RPM_BUILD_ROOT/etc/{sysconfig/firewall-rules,rc.d/init.d}
 
-install firewall.init $RPM_BUILD_ROOT/etc/rc.d/init.d/firewall
-install firewall $RPM_BUILD_ROOT/etc/sysconfig/
+%{__make} install DESTDIR=$RPM_BUILD_ROOT
 
-for i in input output forward; do
-	echo '#<policy> <proto> <s_addr/s_mask> <s_port> <d_addr/d_mask> <d_port> <interface> <options>' > \
-		$RPM_BUILD_ROOT/etc/sysconfig/firewall-rules/${i}
-done
+gzip -9nf README
 
 %post
 /sbin/chkconfig --add firewall
+/sbin/chkconfig --add firewall-pre
 
 %postun
 if [ "$1" = "0" ]; then
 	/sbin/chkconfig --del firewall
+	/sbin/chkconfig --del firewall-pre
 fi
 
 %clean
@@ -51,8 +52,11 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README input.example
-%attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
-%attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall-rules/*
-%attr(700,root,root) %dir /etc/sysconfig/firewall-rules
-%attr(754,root,root) /etc/rc.d/init.d/firewall
+%doc README.gz
+%defattr(640,root,root,750)
+%verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
+%verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall.d/ip*
+%verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall.d/functions.rules
+/etc/sysconfig/firewall.d/functions
+%attr(754,root,root) /etc/rc.d/init.d/firewall*
+%dir /etc/sysconfig/firewall.d
