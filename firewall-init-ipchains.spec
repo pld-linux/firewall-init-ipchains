@@ -6,7 +6,7 @@ Release:	1@2.2
 License:	BSD
 Group:		Networking/Admin
 Group(de):	Netzwerkwesen/Administration
-Group(pl):	Sieciowe/Administacyjne
+Group(pl):	Sieciowe/Administracyjne
 Source0:	ftp://ftp.lj.pl/pub/linux/%{name}-%{version}.tar.gz
 Requires:	ipchains
 Conflicts:	kernel >= 2.3.0
@@ -40,6 +40,8 @@ for i in input output forward; do
 		$RPM_BUILD_ROOT/etc/sysconfig/firewall-rules/${i}
 done
 
+gzip -9nf README
+
 %post
 /sbin/chkconfig --add firewall
 
@@ -53,7 +55,7 @@ rm -rf $RPM_BUILD_ROOT
 
 %files
 %defattr(644,root,root,755)
-%doc README input.example
+%doc README.gz input.example
 %attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
 %attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall-rules/*
 %attr(700,root,root) %dir /etc/sysconfig/firewall-rules
