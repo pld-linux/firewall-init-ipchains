@@ -2,13 +2,14 @@ Summary:	Firewall SysV-init style start-up script
 Summary(pl):	Skrypt startowy firewalla
 Name:		firewall-init
 Version:	2.1
-Release:	1
+Release:	1@2.2
 License:	BSD
 Group:		Networking/Admin
 Group(de):	Netzwerkwesen/Administration
 Group(pl):	Sieciowe/Administacyjne
 Source0:	ftp://hunter.mimuw.edu.pl/pub/users/baggins/%{name}-%{version}.tar.gz
 Requires:	ipchains
+Conflicts:	kernel >= 2.3.0
 Prereq:		rc-scripts
 Prereq:		/sbin/chkconfig
 Buildarch:	noarch
