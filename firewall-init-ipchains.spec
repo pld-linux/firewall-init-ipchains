@@ -10,7 +10,7 @@ Prereq:		/sbin/chkconfig
 Requires:	ipchains
 Requires:	rc-scripts
 Buildarch:	noarch
-Buildroot:	/tmp/%{name}-%{version}-root
+BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
 Firewall-init is meant to provide an easy to use interface to start and
