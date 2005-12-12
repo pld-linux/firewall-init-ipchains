@@ -9,9 +9,9 @@ Group:		Networking/Admin
 Source0:	%{_name}-%{version}.tar.gz
 # Source0-md5:	07ba7a897e2d903d629e6607e3b495f3
 Patch0:		%{_name}-syntax_verify.patch
+Requires:	/sbin/chkconfig
 Requires:	ipchains
-PreReq:		rc-scripts
-PreReq:		/sbin/chkconfig
+Requires:	rc-scripts
 Obsoletes:	firewall-init < 2.2
 Conflicts:	firewall-init >= 2.99
 Buildarch:	noarch
@@ -57,7 +57,7 @@ rm -rf $RPM_BUILD_ROOT
 %files
 %defattr(644,root,root,755)
 %doc README input.example
-%attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall
-%attr(600,root,root) %verify(not size mtime md5) %config(noreplace) /etc/sysconfig/firewall-rules/*
+%attr(600,root,root) %verify(not md5 mtime size) %config(noreplace) /etc/sysconfig/firewall
+%attr(600,root,root) %verify(not md5 mtime size) %config(noreplace) /etc/sysconfig/firewall-rules/*
 %attr(700,root,root) %dir /etc/sysconfig/firewall-rules
 %attr(754,root,root) /etc/rc.d/init.d/firewall
