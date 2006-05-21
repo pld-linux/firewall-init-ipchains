@@ -3,7 +3,7 @@ Summary:	ipchains firewall SysV-init style start-up script
 Summary(pl):	Skrypt startowy firewalla ipchains
 Name:		%{_name}-ipchains
 Version:	2.1
-Release:	4
+Release:	5
 License:	BSD
 Group:		Networking/Admin
 Source0:	%{_name}-%{version}.tar.gz
