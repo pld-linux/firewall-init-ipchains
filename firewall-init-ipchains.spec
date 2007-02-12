@@ -1,6 +1,6 @@
 %define		_name	firewall-init
 Summary:	ipchains firewall SysV-init style start-up script
-Summary(pl):	Skrypt startowy firewalla ipchains
+Summary(pl.UTF-8):   Skrypt startowy firewalla ipchains
 Name:		%{_name}-ipchains
 Version:	2.1
 Release:	5
@@ -22,9 +22,9 @@ Firewall-init is meant to provide an easy to use interface to start
 and stopping the kernel IP packet filters and accounting through
 ipchains(8).
 
-%description -l pl
-Dziêki firewall-init uzyskuje siê ³atwy interfejs do startowania i
-stopowania filtrów IP j±dra oraz zliczania pakietów poprzez
+%description -l pl.UTF-8
+DziÄ™ki firewall-init uzyskuje siÄ™ Å‚atwy interfejs do startowania i
+stopowania filtrÃ³w IP jÄ…dra oraz zliczania pakietÃ³w poprzez
 ipchains(8).
 
 %prep
