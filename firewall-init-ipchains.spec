@@ -1,6 +1,6 @@
 %define		_name	firewall-init
 Summary:	ipchains firewall SysV-init style start-up script
-Summary(pl.UTF-8):   Skrypt startowy firewalla ipchains
+Summary(pl.UTF-8):	Skrypt startowy firewalla ipchains
 Name:		%{_name}-ipchains
 Version:	2.1
 Release:	5
