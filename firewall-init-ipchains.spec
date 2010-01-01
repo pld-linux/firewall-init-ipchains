@@ -14,7 +14,7 @@ Requires:	ipchains
 Requires:	rc-scripts
 Obsoletes:	firewall-init < 2.2
 Conflicts:	firewall-init >= 2.99
-Buildarch:	noarch
+BuildArch:	noarch
 BuildRoot:	%{tmpdir}/%{name}-%{version}-root-%(id -u -n)
 
 %description
